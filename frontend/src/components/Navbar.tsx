@@ -94,6 +94,18 @@ const Navbar = () => {
                 className={`text-sm font-medium transition-colors ${location.pathname==='/'?'text-white':'text-white/50 hover:text-white'}`}>
                 Bosh Sahifa
               </Link>
+              <button
+                onClick={() => {
+                  if (location.pathname !== '/') {
+                    window.location.href = '/#tariflar';
+                  } else {
+                    document.getElementById('tariflar')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="text-sm font-medium text-white/50 hover:text-white transition-colors"
+              >
+                Tariflar
+              </button>
               {isAdmin && (
                 <>
                   <Link to="/search"
