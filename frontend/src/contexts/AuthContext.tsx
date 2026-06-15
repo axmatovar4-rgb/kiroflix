@@ -62,12 +62,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async (email: string, password: string) => {
-    // Small delay to feel real
     await new Promise(r => setTimeout(r, 600));
     const users = getUsers();
     const found = users[email.toLowerCase()];
     if (!found || found.password !== password) {
       throw { response: { data: { message: "Email yoki parol noto'g'ri" } } };
+    }
+    if (found.blocked) {
+      throw { response: { data: { message: "Sizning hisobingiz bloklangan. Admin bilan bog'laning." } } };
     }
     save('token_' + Date.now(), makeUser(found.name, email));
   };

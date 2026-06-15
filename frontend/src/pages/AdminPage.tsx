@@ -6,6 +6,39 @@ import { mockMovies } from '../data/mockMovies';
 const ADMIN_KEY  = 'cv_admin_movies';
 const ADMIN_USER = 'Robiya';
 const ADMIN_PASS = 'Robiya';
+const USERS_KEY  = 'cv_users';
+
+// Foydalanuvchilar
+type UserRecord = {
+  email: string;
+  name: string;
+  password: string;
+  blocked?: boolean;
+  plan?: string;
+  joinedAt?: string;
+};
+
+const loadUsers = (): UserRecord[] => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+    return Object.entries(raw).map(([email, data]: [string, any]) => ({
+      email,
+      name: data.name || email.split('@')[0],
+      password: data.password || '',
+      blocked: data.blocked || false,
+      plan: data.plan || '',
+      joinedAt: data.joinedAt || '',
+    }));
+  } catch { return []; }
+};
+
+const saveUsers = (users: UserRecord[]) => {
+  const raw: Record<string, any> = {};
+  users.forEach(u => {
+    raw[u.email] = { name: u.name, password: u.password, blocked: u.blocked, plan: u.plan, joinedAt: u.joinedAt };
+  });
+  localStorage.setItem(USERS_KEY, JSON.stringify(raw));
+};
 
 // LocalStorage + mockMovies birlashtirish
 const loadMovies = (): Movie[] => {
@@ -45,13 +78,16 @@ const AdminPage = () => {
   const [login,     setLogin]     = useState('');
   const [passErr,   setPassErr]   = useState('');
   const [movies,    setMovies]    = useState<Movie[]>([]);
-  const [tab,       setTab]       = useState<'list'|'add'|'edit'>('list');
+  const [tab,       setTab]       = useState<'list'|'add'|'edit'|'users'>('list');
   const [editing,   setEditing]   = useState<Movie | null>(null);
   const [form,      setForm]      = useState<Omit<Movie,'_id'>>(EMPTY_MOVIE);
   const [genreInput,setGenreInput]= useState('');
   const [castInput, setCastInput] = useState('');
   const [saved,     setSaved]     = useState(false);
   const [deleteId,  setDeleteId]  = useState<string|null>(null);
+  const [users,     setUsers]     = useState<UserRecord[]>([]);
+  const [editUser,  setEditUser]  = useState<UserRecord|null>(null);
+  const [deleteUserEmail, setDeleteUserEmail] = useState<string|null>(null);
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem('cv_admin') === '1';
@@ -59,7 +95,8 @@ const AdminPage = () => {
       setAuthed(true);
       const all = loadMovies();
       setMovies(all);
-      saveMovies(all); // localStorage ga yoz
+      saveMovies(all);
+      setUsers(loadUsers());
     }
   }, []);
 
@@ -69,6 +106,7 @@ const AdminPage = () => {
       sessionStorage.setItem('cv_admin', '1');
       setAuthed(true);
       setMovies(loadMovies());
+      setUsers(loadUsers());
     } else {
       setPassErr("Parol noto'g'ri");
     }
@@ -215,14 +253,18 @@ const AdminPage = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-6 flex-wrap">
           <button onClick={() => setTab('list')}
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='list'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
-            Filmlar ro'yxati
+            🎬 Filmlar
           </button>
           <button onClick={openAdd}
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='add'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
-            + Yangi film qo'shish
+            + Yangi film
+          </button>
+          <button onClick={() => { setTab('users'); setUsers(loadUsers()); }}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='users'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
+            👥 Foydalanuvchilar <span className="ml-1 opacity-60 text-xs">({users.length})</span>
           </button>
           {saved && (
             <span className="text-green-400 text-sm flex items-center gap-1.5 ml-auto">
@@ -288,7 +330,83 @@ const AdminPage = () => {
           </div>
         )}
 
-        {/* ── Add / Edit form ── */}
+        {/* ── Users list ── */}
+        {tab === 'users' && (
+          <div className="space-y-3">
+            {users.length === 0 ? (
+              <div className="glass rounded-2xl p-16 text-center">
+                <div className="text-5xl mb-4">👥</div>
+                <p className="text-white/40 text-lg">Hali foydalanuvchi yo'q</p>
+                <p className="text-white/20 text-sm mt-1">Ro'yxatdan o'tgan foydalanuvchilar bu yerda ko'rinadi</p>
+              </div>
+            ) : (
+              <>
+                <div className="glass rounded-xl px-4 py-2.5 flex items-center gap-2 text-white/40 text-xs">
+                  <span>Jami: <span className="text-white font-bold">{users.length}</span> foydalanuvchi</span>
+                  <span className="ml-4">Bloklangan: <span className="text-red-400 font-bold">{users.filter(u=>u.blocked).length}</span></span>
+                  <span className="ml-4">Faol tarif: <span className="text-green-400 font-bold">{users.filter(u=>u.plan).length}</span></span>
+                </div>
+                {users.map(u => (
+                  <div key={u.email} className={`glass rounded-2xl p-4 flex items-center gap-4 transition-colors ${u.blocked ? 'opacity-60 border border-red-500/20' : 'hover:bg-white/5'}`}>
+                    {/* Avatar */}
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-lg flex-shrink-0 ${
+                      u.blocked ? 'bg-red-500/20 text-red-400' : 'bg-gradient-to-br from-[#E50914] to-[#ff6b6b] text-white'}`}>
+                      {u.name.charAt(0).toUpperCase()}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-semibold text-sm">{u.name}</span>
+                        {u.blocked && <span className="text-[9px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">BLOKLANGAN</span>}
+                        {u.plan && <span className="text-[9px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full">{u.plan}</span>}
+                        {u.email === 'demo@kiroflix.uz' && <span className="text-[9px] bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded-full">DEMO</span>}
+                      </div>
+                      <p className="text-white/40 text-xs mt-0.5">{u.email}</p>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      {/* Tahrirlash */}
+                      <button onClick={() => setEditUser({...u})}
+                        className="glass px-3 py-2 rounded-lg text-white/60 hover:text-white text-xs transition-colors flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Tahrirlash
+                      </button>
+                      {/* Bloklash/Ochish */}
+                      <button onClick={() => {
+                        const updated = users.map(x => x.email===u.email ? {...x, blocked: !x.blocked} : x);
+                        setUsers(updated); saveUsers(updated);
+                      }}
+                        className={`glass px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-1.5 ${
+                          u.blocked ? 'text-green-400 hover:text-green-300' : 'text-yellow-400 hover:text-yellow-300'}`}>
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d={u.blocked
+                              ? 'M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z'
+                              : 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'}/>
+                        </svg>
+                        {u.blocked ? 'Ochish' : 'Bloklash'}
+                      </button>
+                      {/* O'chirish */}
+                      <button onClick={() => setDeleteUserEmail(u.email)}
+                        className="glass px-3 py-2 rounded-lg text-red-400/70 hover:text-red-400 text-xs transition-colors flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        O'chirish
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
+
+
         {(tab === 'add' || tab === 'edit') && (
           <div className="glass rounded-2xl p-6 md:p-8">
             <h2 className="text-white font-bold text-xl mb-6">
@@ -531,6 +649,76 @@ const AdminPage = () => {
               </button>
               <button onClick={() => setDeleteId(null)}
                 className="flex-1 btn-glass py-3 rounded-xl text-sm">
+                Bekor
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Delete user confirm */}
+      {deleteUserEmail && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur z-50 flex items-center justify-center p-4">
+          <div className="glass-dark rounded-2xl p-8 max-w-sm w-full text-center">
+            <div className="text-4xl mb-4">👤</div>
+            <h3 className="text-white font-bold text-lg mb-2">Foydalanuvchini o'chirish</h3>
+            <p className="text-white/40 text-sm mb-1">{deleteUserEmail}</p>
+            <p className="text-white/25 text-xs mb-6">Bu amaliyot qaytarilmaydi</p>
+            <div className="flex gap-3">
+              <button onClick={() => {
+                const updated = users.filter(u => u.email !== deleteUserEmail);
+                setUsers(updated); saveUsers(updated); setDeleteUserEmail(null);
+              }}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl text-sm font-bold transition-colors">
+                Ha, o'chirish
+              </button>
+              <button onClick={() => setDeleteUserEmail(null)} className="flex-1 btn-glass py-3 rounded-xl text-sm">
+                Bekor
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit user modal */}
+      {editUser && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur z-50 flex items-center justify-center p-4">
+          <div className="glass-dark rounded-2xl p-6 w-full max-w-sm">
+            <h3 className="text-white font-bold text-lg mb-5">Foydalanuvchini tahrirlash</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="text-white/40 text-xs mb-1 block">Ism</label>
+                <input value={editUser.name} onChange={e => setEditUser({...editUser, name: e.target.value})}
+                  className="input-cv w-full px-4 py-3 rounded-xl text-sm"/>
+              </div>
+              <div>
+                <label className="text-white/40 text-xs mb-1 block">Email</label>
+                <input value={editUser.email} disabled className="input-cv w-full px-4 py-3 rounded-xl text-sm opacity-50"/>
+              </div>
+              <div>
+                <label className="text-white/40 text-xs mb-1 block">Tarif</label>
+                <select value={editUser.plan || ''} onChange={e => setEditUser({...editUser, plan: e.target.value})}
+                  className="input-cv w-full px-4 py-3 rounded-xl text-sm">
+                  <option value="" style={{background:'#1a1a1a'}}>Tarif yo'q</option>
+                  {['1 Oylik','3 Oylik','6 Oylik','1 Yillik'].map(p => (
+                    <option key={p} value={p} style={{background:'#1a1a1a'}}>{p}</option>
+                  ))}
+                </select>
+              </div>
+              <label className="flex items-center gap-3 cursor-pointer p-3 glass rounded-xl">
+                <input type="checkbox" checked={!!editUser.blocked} onChange={e => setEditUser({...editUser, blocked: e.target.checked})}
+                  className="w-4 h-4 accent-red-500"/>
+                <span className="text-white/70 text-sm">Bloklangan</span>
+              </label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button onClick={() => {
+                const updated = users.map(u => u.email===editUser.email ? editUser : u);
+                setUsers(updated); saveUsers(updated); setEditUser(null);
+              }}
+                className="flex-1 btn-red py-3 rounded-xl text-sm font-bold">
+                Saqlash
+              </button>
+              <button onClick={() => setEditUser(null)} className="flex-1 btn-glass py-3 rounded-xl text-sm">
                 Bekor
               </button>
             </div>
