@@ -33,9 +33,20 @@ const loadUsers = (): UserRecord[] => {
 };
 
 const saveUsers = (users: UserRecord[]) => {
+  // Mavjud cv_users dan boshqa fieldlarni saqlab qolish
+  const existing: Record<string, any> = (() => {
+    try { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); } catch { return {}; }
+  })();
   const raw: Record<string, any> = {};
   users.forEach(u => {
-    raw[u.email] = { name: u.name, password: u.password, blocked: u.blocked, plan: u.plan, joinedAt: u.joinedAt };
+    raw[u.email] = {
+      ...existing[u.email], // avvalgi fieldlarni saqla
+      name: u.name,
+      password: u.password,
+      blocked: u.blocked ?? false,
+      plan: u.plan || '',
+      joinedAt: u.joinedAt || '',
+    };
   });
   localStorage.setItem(USERS_KEY, JSON.stringify(raw));
 };
@@ -385,7 +396,10 @@ const AdminPage = () => {
                       {/* Bloklash/Ochish */}
                       <button onClick={() => {
                         const updated = users.map(x => x.email===u.email ? {...x, blocked: !x.blocked} : x);
-                        setUsers(updated); saveUsers(updated);
+                        setUsers(updated);
+                        saveUsers(updated);
+                        // Qayta yuklash — tasdiqlash uchun
+                        setTimeout(() => setUsers(loadUsers()), 100);
                       }} title={u.blocked ? 'Ochish' : 'Bloklash'}
                         className={`glass w-9 h-9 rounded-lg transition-colors flex items-center justify-center ${
                           u.blocked ? 'text-green-400 hover:text-green-300' : 'text-yellow-400 hover:text-yellow-300'}`}>
