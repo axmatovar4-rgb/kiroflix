@@ -60,7 +60,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden">
+    <div className="bg-[#080808]">
+      <div className="min-h-screen flex relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <img src="https://picsum.photos/seed/kiroflix2025/1920/1080" alt=""
@@ -274,8 +275,166 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+
+    {/* ── TARIFLAR ── */}
+    <section id="tariflar" className="py-24 px-6 md:px-16 bg-[#080808]">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-[#E50914] text-xs font-bold uppercase tracking-widest mb-3">Tariflar</p>
+          <h2 className="text-white font-black text-3xl md:text-5xl mb-4" style={{fontFamily:'Poppins,sans-serif'}}>
+            O'zingizga mos tarifni tanlang
+          </h2>
+          <p className="text-white/50 text-base max-w-xl mx-auto">
+            Har qanday ehtiyoj uchun qulay narxlar. Istalgan vaqt bekor qilish imkoniyati.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 1 Oylik */}
+          <div className="relative rounded-2xl border border-white/10 overflow-hidden flex flex-col hover:-translate-y-1 transition-transform hover:shadow-2xl hover:shadow-black/60">
+            <div className="bg-gradient-to-br from-slate-600 to-slate-700 px-6 pt-8 pb-6">
+              <p className="text-white/70 text-sm font-medium mb-2">1 Oylik</p>
+              <span className="text-white font-black text-3xl">100 000</span>
+              <p className="text-white/50 text-xs mt-1">so'm/oy</p>
+            </div>
+            <div className="bg-white/5 border-t border-white/10 px-6 py-6 flex-1 flex flex-col">
+              <ul className="space-y-3 flex-1">
+                {[
+                  [true,  'HD sifat (720p)'],
+                  [true,  '1 ta qurilma'],
+                  [true,  '10 ta film'],
+                  [false, "Reklama yo'q"],
+                  [false, 'Yuklab olish'],
+                  [false, '4K sifat'],
+                  [false, 'Cheksiz filmlar'],
+                  [false, 'Oilaviy rejim'],
+                ].map(([ok, text], i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    {ok ? (
+                      <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-white/20 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                    )}
+                    <span className={`text-sm ${ok ? 'text-white/80' : 'text-white/25 line-through'}`}>{text as string}</span>
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => navigate('/register')} className="mt-6 w-full py-3 rounded-xl text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all">
+                Boshlash
+              </button>
+            </div>
+          </div>
+
+          {/* 3 Oylik */}
+          <div className="relative rounded-2xl border border-blue-500/40 overflow-hidden flex flex-col hover:-translate-y-1 transition-transform hover:shadow-2xl hover:shadow-black/60">
+            <div className="bg-gradient-to-br from-blue-700 to-blue-800 px-6 pt-8 pb-6">
+              <p className="text-white/70 text-sm font-medium mb-2">3 Oylik</p>
+              <span className="text-white font-black text-3xl">300 000</span>
+              <p className="text-white/50 text-xs mt-1">so'm/3 oy</p>
+            </div>
+            <div className="bg-white/5 border-t border-white/10 px-6 py-6 flex-1 flex flex-col">
+              <ul className="space-y-3 flex-1">
+                {[
+                  [true,  'Full HD (1080p)'],
+                  [true,  '2 ta qurilma'],
+                  [true,  '50 ta film'],
+                  [true,  "Reklama yo'q"],
+                  [true,  'Yuklab olish (5 ta)'],
+                  [false, '4K sifat'],
+                  [false, 'Cheksiz filmlar'],
+                  [false, 'Oilaviy rejim'],
+                ].map(([ok, text], i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    {ok ? (
+                      <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-white/20 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                    )}
+                    <span className={`text-sm ${ok ? 'text-white/80' : 'text-white/25 line-through'}`}>{text as string}</span>
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => navigate('/register')} className="mt-6 w-full py-3 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white transition-all">
+                Boshlash
+              </button>
+            </div>
+          </div>
+
+          {/* 6 Oylik */}
+          <div className="relative rounded-2xl border border-purple-500/50 overflow-hidden flex flex-col hover:-translate-y-1 transition-transform hover:shadow-2xl hover:shadow-black/60">
+            <div className="absolute top-4 right-4 z-10">
+              <span className="bg-white text-black text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wide">Mashhur</span>
+            </div>
+            <div className="bg-gradient-to-br from-purple-700 to-purple-800 px-6 pt-8 pb-6">
+              <p className="text-white/70 text-sm font-medium mb-2">6 Oylik</p>
+              <span className="text-white font-black text-3xl">600 000</span>
+              <p className="text-white/50 text-xs mt-1">so'm/6 oy</p>
+            </div>
+            <div className="bg-white/5 border-t border-white/10 px-6 py-6 flex-1 flex flex-col">
+              <ul className="space-y-3 flex-1">
+                {[
+                  [true,  'Full HD + 4K sifat'],
+                  [true,  '3 ta qurilma'],
+                  [true,  '100 ta film'],
+                  [true,  "Reklama yo'q"],
+                  [true,  'Yuklab olish (20 ta)'],
+                  [true,  'Yangi filmlar erta'],
+                  [true,  'Maxsus kontentlar'],
+                  [false, 'Oilaviy rejim'],
+                ].map(([ok, text], i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    {ok ? (
+                      <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-white/20 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                    )}
+                    <span className={`text-sm ${ok ? 'text-white/80' : 'text-white/25 line-through'}`}>{text as string}</span>
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => navigate('/register')} className="mt-6 w-full py-3 rounded-xl text-sm font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all">
+                Boshlash
+              </button>
+            </div>
+          </div>
+
+          {/* 1 Yillik */}
+          <div className="relative rounded-2xl border border-[#E50914]/60 overflow-hidden flex flex-col hover:-translate-y-1 transition-transform hover:shadow-2xl hover:shadow-[#E50914]/20">
+            <div className="absolute top-4 right-4 z-10">
+              <span className="bg-[#E50914] text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wide">Eng Yaxshi</span>
+            </div>
+            <div className="bg-gradient-to-br from-[#E50914] to-[#b20710] px-6 pt-8 pb-6">
+              <p className="text-white/70 text-sm font-medium mb-2">1 Yillik</p>
+              <span className="text-white font-black text-3xl">1 500 000</span>
+              <p className="text-white/50 text-xs mt-1">so'm/yil</p>
+            </div>
+            <div className="bg-white/5 border-t border-white/10 px-6 py-6 flex-1 flex flex-col">
+              <ul className="space-y-3 flex-1">
+                {[
+                  [true, '4K Ultra HD'],
+                  [true, '5 ta qurilma'],
+                  [true, 'Cheksiz filmlar'],
+                  [true, "Reklama yo'q"],
+                  [true, 'Cheksiz yuklab olish'],
+                  [true, 'Oilaviy rejim (5 profil)'],
+                  [true, 'Yangi filmlar erta'],
+                  [true, "Premium qo'llab-quvvatlash"],
+                ].map(([ok, text], i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                    <span className="text-sm text-white/80">{text as string}</span>
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => navigate('/register')} className="mt-6 w-full py-3 rounded-xl text-sm font-bold bg-[#E50914] hover:bg-[#c2070f] text-white transition-all">
+                Boshlash
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
 export default LoginPage;
-
