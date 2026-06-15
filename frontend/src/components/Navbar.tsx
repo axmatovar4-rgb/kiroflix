@@ -96,8 +96,8 @@ const Navbar = () => {
               </Link>
               <button
                 onClick={() => {
-                  if (location.pathname !== '/') {
-                    window.location.href = '/#tariflar';
+                  if (location.pathname !== '/login') {
+                    window.location.href = '/login#tariflar';
                   } else {
                     document.getElementById('tariflar')?.scrollIntoView({ behavior: 'smooth' });
                   }

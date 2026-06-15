@@ -8,6 +8,7 @@ import BackButton from '../components/BackButton';
 const TABS = [
   { id: 'watchlist', label: 'Sevimlilar',     icon: 'M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' },
   { id: 'history',   label: "Ko'rish tarixi", icon: 'M15 10l4.553-2.069A1 1 0 0121 8.82v6.361a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z' },
+  { id: 'tariflarim',label: 'Tariflarim',     icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z' },
   { id: 'paid',      label: "To'lov tarixi",  icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
   { id: 'search',    label: 'Qidiruv tarixi', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
 ];
@@ -259,6 +260,101 @@ const ProfilePage = () => {
             </div>
           )
         )}
+
+        {/* ── Tariflarim ── */}
+        {tab === 'tariflarim' && (() => {
+          const activePlan = localStorage.getItem('cv_plan_name') || null;
+          const isDemo = localStorage.getItem('cv_is_demo') === '1';
+
+          const PLANS = [
+            { id: '1oy',  name: '1 Oylik',  price: '100 000', period: "so'm/oy",    color: 'from-slate-600 to-slate-700', border: 'border-white/10',       features: ['HD sifat (720p)', '1 ta qurilma', '10 ta film'] },
+            { id: '3oy',  name: '3 Oylik',  price: '300 000', period: "so'm/3 oy",  color: 'from-blue-700 to-blue-800',   border: 'border-blue-500/40',     features: ['Full HD (1080p)', '2 ta qurilma', '50 ta film', "Reklama yo'q", 'Yuklab olish (5 ta)'] },
+            { id: '6oy',  name: '6 Oylik',  price: '600 000', period: "so'm/6 oy",  color: 'from-purple-700 to-purple-800', border: 'border-purple-500/50', features: ['Full HD + 4K', '3 ta qurilma', '100 ta film', "Reklama yo'q", 'Yuklab olish (20 ta)', 'Yangi filmlar erta'] },
+            { id: '1yil', name: '1 Yillik', price: '1 500 000', period: "so'm/yil", color: 'from-[#E50914] to-[#b20710]',  border: 'border-[#E50914]/60',   features: ['4K Ultra HD', '5 ta qurilma', 'Cheksiz filmlar', "Reklama yo'q", 'Cheksiz yuklab olish', 'Oilaviy rejim', 'Yangi filmlar erta', "Premium qo'llab-quvvatlash"] },
+          ];
+
+          return (
+            <div className="space-y-6">
+              {/* Joriy tarif */}
+              <div className="glass rounded-2xl p-6">
+                <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest mb-4">Joriy tarif</h3>
+                {isDemo ? (
+                  <div className="flex items-center gap-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+                    <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-yellow-400 font-bold">Demo rejim</p>
+                      <p className="text-white/40 text-sm">10 ta film bepul, to'liq kirish uchun tarif tanlang</p>
+                    </div>
+                  </div>
+                ) : activePlan ? (
+                  <div className="flex items-center gap-4 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                    <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-green-400 font-bold">{activePlan} — Faol</p>
+                      <p className="text-white/40 text-sm">Tarifingiz faol holda</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-red-400 font-bold">Tarif tanlanmagan</p>
+                      <p className="text-white/40 text-sm">Filmlarni ko'rish uchun tarif tanlang</p>
+                    </div>
+                    <button onClick={() => navigate('/login#tariflar')} className="btn-red px-4 py-2 rounded-xl text-xs">
+                      Tarif tanlash
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Barcha tariflar */}
+              <div>
+                <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest mb-4">Barcha tariflar</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {PLANS.map(plan => (
+                    <div key={plan.id} className={`rounded-2xl border ${plan.border} overflow-hidden ${activePlan === plan.name ? 'ring-2 ring-green-400/60' : ''}`}>
+                      <div className={`bg-gradient-to-br ${plan.color} px-5 pt-6 pb-4 relative`}>
+                        {activePlan === plan.name && (
+                          <div className="absolute top-3 right-3">
+                            <span className="bg-green-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full">Faol</span>
+                          </div>
+                        )}
+                        <p className="text-white/70 text-xs font-medium mb-1">{plan.name}</p>
+                        <p className="text-white font-black text-2xl">{plan.price}</p>
+                        <p className="text-white/50 text-xs mt-0.5">{plan.period}</p>
+                      </div>
+                      <div className="bg-white/5 px-5 py-4">
+                        <ul className="space-y-2">
+                          {plan.features.map((f, i) => (
+                            <li key={i} className="flex items-center gap-2 text-xs text-white/70">
+                              <svg className="w-3.5 h-3.5 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                              </svg>
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ── Qidiruv tarixi ── */}
         {tab === 'search' && (

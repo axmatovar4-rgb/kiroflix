@@ -533,6 +533,7 @@ const LoginPage = () => {
                   <p className="text-green-400 text-sm font-semibold mb-6">{selectedPlan.priceLabel} so'm to'landi</p>
                   <button onClick={() => {
                     localStorage.setItem('cv_plan_active', '1');
+                    localStorage.setItem('cv_plan_name', selectedPlan.name);
                     navigate('/');
                   }} className="btn-red w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
