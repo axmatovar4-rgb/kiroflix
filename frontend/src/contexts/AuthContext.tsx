@@ -17,7 +17,7 @@ const USERS_KEY = 'cv_users';
 const TOKEN_KEY = 'cv_token';
 const USER_KEY  = 'cv_user';
 
-const getUsers = (): Record<string, { name: string; password: string }> => {
+const getUsers = (): Record<string, { name: string; password: string; blocked?: boolean }> => {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); }
   catch { return {}; }
 };
