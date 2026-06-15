@@ -17,12 +17,15 @@ const MovieDetailPage = () => {
   const [player,      setPlayer]      = useState(false);
   const [showPayment, setShowPayment] = useState(false);
 
+  // Demo user tekshiruvi — faqat "Demo bilan kirish" tugmasi orqali kirganlar
+  const isDemo = localStorage.getItem('cv_is_demo') === '1';
+
   // To'langan filmlar ro'yxati localStorage dan
   const getPaidMovies = (): string[] => {
     try { return JSON.parse(localStorage.getItem('paid_movies') || '[]'); }
     catch { return []; }
   };
-  const isPaid = (movieId: string) => getPaidMovies().includes(movieId);
+  const isPaid = (movieId: string) => isDemo || getPaidMovies().includes(movieId);
 
   const markAsPaid = (movieId: string) => {
     const paid = getPaidMovies();
@@ -182,26 +185,44 @@ const MovieDetailPage = () => {
             </p>
 
             {/* Price badge */}
-            <div className="flex items-center gap-3 mb-5">
-              <span className="flex items-center gap-2 bg-[#E50914]/15 border border-[#E50914]/40 text-white px-5 py-2.5 rounded-xl">
-                <svg className="w-5 h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span className="text-white/60 text-sm">Ko'rish narxi:</span>
-                <span className="text-[#E50914] font-black text-lg">{movie.price?.toLocaleString()} so'm</span>
-              </span>
-            </div>
+            {!isDemo && movie.price && !movie.isFree && (
+              <div className="flex items-center gap-3 mb-5">
+                <span className="flex items-center gap-2 bg-[#E50914]/15 border border-[#E50914]/40 text-white px-5 py-2.5 rounded-xl">
+                  <svg className="w-5 h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span className="text-white/60 text-sm">Ko'rish narxi:</span>
+                  <span className="text-[#E50914] font-black text-lg">{movie.price?.toLocaleString()} so'm</span>
+                </span>
+              </div>
+            )}
+            {isDemo && (
+              <div className="flex items-center gap-3 mb-5">
+                <span className="flex items-center gap-2 bg-green-500/15 border border-green-500/40 text-white px-5 py-2.5 rounded-xl">
+                  <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span className="text-green-400 font-bold text-sm">Demo rejim — barcha filmlar bepul!</span>
+                </span>
+              </div>
+            )}
 
             {/* Buttons */}
             <div className="flex flex-wrap gap-3 mb-10">
               <button
-                onClick={() => setShowPayment(true)}
+                onClick={() => {
+                  if (isDemo || movie.isFree || isPaid(movie._id)) {
+                    setPlayer(true);
+                  } else {
+                    setShowPayment(true);
+                  }
+                }}
                 className="btn-red flex items-center gap-2.5 px-8 py-3.5 rounded-xl text-base glow-red"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                 </svg>
-                {isPaid(movie._id) ? "Ko'rish" : `Ko'rish — ${movie.price?.toLocaleString()} so'm`}
+                {isDemo ? "Ko'rish (Demo)" : isPaid(movie._id) ? "Ko'rish" : `Ko'rish — ${movie.price?.toLocaleString()} so'm`}
               </button>
 
               <button
@@ -287,7 +308,7 @@ const MovieDetailPage = () => {
       )}
 
       {/* Payment Modal */}
-      {showPayment && movie.price && (
+      {showPayment && movie.price && !isDemo && (
         <PaymentModal
           movieTitle={movie.title}
           price={movie.price}
