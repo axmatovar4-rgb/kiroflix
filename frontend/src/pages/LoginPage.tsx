@@ -225,33 +225,59 @@ const LoginPage = () => {
               Minglab filmlar, seriallar — barchasi bir joyda. Istalgan vaqt, istalgan qurilmada tomosha qiling.
             </p>
             <div className="grid grid-cols-2 gap-3 mb-10">
-              {[
-                ['#E50914','M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4','28+ Film','Premium kontent'],
-                ['#60a5fa','M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129',"O'zbek tilida",'Dublyaj & tarjima'],
-                ['#facc15','M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z','HD & 4K','Yuqori sifat'],
-                ['#a78bfa','M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Robiya Xurshidova','Asoschi'],
-              ].map(([color, path, title, sub]) => (
-                <div key={title as string} className="flex items-center gap-3 glass rounded-xl px-4 py-3">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:`${color}22`}}>
-                    <svg className="w-5 h-5" style={{color: color as string}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={path as string}/>
+              {/* 28+ Film */}
+              <div className="flex items-center gap-3 glass rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'#E5091422'}}>
+                  <svg className="w-5 h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold">28+ Film</p>
+                  <p className="text-white/40 text-xs">Premium kontent</p>
+                </div>
+              </div>
+              {/* O'zbek tilida */}
+              <div className="flex items-center gap-3 glass rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'#60a5fa22'}}>
+                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold">O'zbek tilida</p>
+                  <p className="text-white/40 text-xs">Dublyaj & tarjima</p>
+                </div>
+              </div>
+              {/* HD & 4K */}
+              <div className="flex items-center gap-3 glass rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'#facc1522'}}>
+                  <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold">HD & 4K</p>
+                  <p className="text-white/40 text-xs">Yuqori sifat</p>
+                </div>
+              </div>
+              {/* Robiya Xurshidova */}
+              <div className="flex items-center gap-3 glass rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'#a78bfa22'}}>
+                  <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-white text-xs font-bold truncate">Robiya Xurshidova</p>
+                    <svg className="w-3.5 h-3.5 flex-shrink-0 text-[#2AABEE]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/>
                     </svg>
                   </div>
-                  <div>
-                    {title === 'Robiya Xurshidova' ? (
-                      <div className="flex items-center gap-1.5">
-                        <p className="text-white text-xs font-bold">{title as string}</p>
-                        <svg className="w-3.5 h-3.5 flex-shrink-0 text-[#2AABEE]" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/>
-                        </svg>
-                      </div>
-                    ) : (
-                      <p className="text-white text-sm font-semibold">{title as string}</p>
-                    )}
-                    <p className="text-white/40 text-xs">{sub as string}</p>
-                  </div>
+                  <p className="text-white/40 text-xs">Asoschi</p>
                 </div>
-              ))}
+              </div>
             </div>
             <div className="border-t border-white/10 pt-5">
               <div className="flex flex-wrap gap-x-6 gap-y-2 mb-2">
