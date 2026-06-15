@@ -238,7 +238,16 @@ const LoginPage = () => {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-semibold">{title as string}</p>
+                    {title === 'Robiya Xurshidova' ? (
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-white text-xs font-bold">{title as string}</p>
+                        <svg className="w-3.5 h-3.5 flex-shrink-0 text-[#2AABEE]" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/>
+                        </svg>
+                      </div>
+                    ) : (
+                      <p className="text-white text-sm font-semibold">{title as string}</p>
+                    )}
                     <p className="text-white/40 text-xs">{sub as string}</p>
                   </div>
                 </div>
