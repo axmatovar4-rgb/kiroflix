@@ -24,6 +24,15 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
+  // Demo user — to'lovsiz kirishi mumkin
+  const isDemo = localStorage.getItem('cv_is_demo') === '1';
+  // Tarif to'langan foydalanuvchi
+  const hasPlan = localStorage.getItem('cv_plan_active') === '1';
+
+  if (!isDemo && !hasPlan) {
+    return <Navigate to="/login#tariflar" replace />;
+  }
+
   return <>{children}</>;
 };
 

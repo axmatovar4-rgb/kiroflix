@@ -88,6 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     localStorage.removeItem('cv_is_demo');
+    localStorage.removeItem('cv_plan_active');
   };
 
   const updateUser = (u: User) => {

@@ -531,7 +531,10 @@ const LoginPage = () => {
                   <h3 className="text-white font-black text-xl mb-2">To'lov muvaffaqiyatli!</h3>
                   <p className="text-white/50 text-sm mb-1">{selectedPlan.name} tarifi faollashtirildi</p>
                   <p className="text-green-400 text-sm font-semibold mb-6">{selectedPlan.priceLabel} so'm to'landi</p>
-                  <button onClick={() => navigate('/')} className="btn-red w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                  <button onClick={() => {
+                    localStorage.setItem('cv_plan_active', '1');
+                    navigate('/');
+                  }} className="btn-red w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
                     </svg>
