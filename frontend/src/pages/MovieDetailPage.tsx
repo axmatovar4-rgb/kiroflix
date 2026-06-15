@@ -6,34 +6,14 @@ import { useAuth } from '../contexts/AuthContext';
 import VideoPlayer from '../components/VideoPlayer';
 import MovieRow from '../components/MovieRow';
 import BackButton from '../components/BackButton';
-import PaymentModal from '../components/PaymentModal';
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user, updateUser } = useAuth();
-  const [movie,       setMovie]       = useState<Movie | null>(null);
-  const [similar,     setSimilar]     = useState<Movie[]>([]);
-  const [player,      setPlayer]      = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
-
-  // Demo user tekshiruvi — faqat "Demo bilan kirish" tugmasi orqali kirganlar
-  const isDemo = localStorage.getItem('cv_is_demo') === '1';
-
-  // To'langan filmlar ro'yxati localStorage dan
-  const getPaidMovies = (): string[] => {
-    try { return JSON.parse(localStorage.getItem('paid_movies') || '[]'); }
-    catch { return []; }
-  };
-  const isPaid = (movieId: string) => isDemo || getPaidMovies().includes(movieId);
-
-  const markAsPaid = (movieId: string) => {
-    const paid = getPaidMovies();
-    if (!paid.includes(movieId)) {
-      paid.push(movieId);
-      localStorage.setItem('paid_movies', JSON.stringify(paid));
-    }
-  };
+  const [movie,   setMovie]   = useState<Movie | null>(null);
+  const [similar, setSimilar] = useState<Movie[]>([]);
+  const [player,  setPlayer]  = useState(false);
 
   useEffect(() => {
     setPlayer(false);
@@ -43,14 +23,13 @@ const MovieDetailPage = () => {
     setSimilar(id ? getRecommendations(id) : []);
   }, [id]);
 
-  // Loading holat
   if (movie === null && id) {
     const found = mockMovies.find(m => m._id === id);
     if (!found) return (
       <div className="min-h-screen bg-[#0b0b0f] flex items-center justify-center pt-16">
         <div className="text-center">
           <div className="text-6xl mb-4">🎬</div>
-          <p className="text-white text-xl font-bold mb-4">Film topilmadi (ID: {id})</p>
+          <p className="text-white text-xl font-bold mb-4">Film topilmadi</p>
           <button onClick={() => navigate('/')} className="btn-red px-6 py-2.5 rounded-xl text-sm">Bosh sahifaga</button>
         </div>
       </div>
@@ -94,20 +73,12 @@ const MovieDetailPage = () => {
           <div className="absolute bottom-0 left-0 right-0 h-28"
             style={{ background: 'linear-gradient(to top,#0b0b0f,transparent)' }} />
 
-          {/* Back */}
           <div className="absolute top-5 left-4 md:left-10 z-10">
             <BackButton />
           </div>
 
-          {/* Play button */}
           <button
-            onClick={() => {
-              if (movie.isFree || isPaid(movie._id)) {
-                setPlayer(true);
-              } else {
-                setShowPayment(true);
-              }
-            }}
+            onClick={() => setPlayer(true)}
             className="absolute inset-0 flex items-center justify-center group"
           >
             <div className="w-20 h-20 rounded-full border-2 border-white/40 bg-black/40 backdrop-blur flex items-center justify-center group-hover:scale-110 group-hover:border-white group-hover:bg-black/60 transition-all duration-300">
@@ -117,7 +88,6 @@ const MovieDetailPage = () => {
             </div>
           </button>
 
-          {/* Genre top-right */}
           <div className="absolute top-5 right-4 md:right-10 hidden md:flex flex-wrap gap-1 justify-end max-w-xs">
             {movie.genre.slice(0, 3).map(g => (
               <span key={g} className="glass text-white/70 text-xs px-2.5 py-1 rounded-full">{g}</span>
@@ -131,7 +101,6 @@ const MovieDetailPage = () => {
             <span className="text-white/50 text-sm">{movie.title}</span>
           </div>
           <VideoPlayer src={movie.videoUrl} poster={backdrop} title={movie.title} />
-          {/* YouTube warning */}
           {movie.videoUrl?.includes('youtube') && (
             <div className="flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border-b border-yellow-500/20">
               <svg className="w-4 h-4 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -147,21 +116,18 @@ const MovieDetailPage = () => {
       <div className="px-4 md:px-10 lg:px-16 py-8 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-10">
 
-          {/* Main */}
           <div className="flex-1 min-w-0">
-            {/* Genres mobile */}
             <div className="flex flex-wrap gap-2 mb-3 md:hidden">
               {movie.genre.map(g => (
                 <span key={g} className="glass text-white/70 text-xs px-3 py-1 rounded-full">{g}</span>
               ))}
             </div>
-            {/* Title */}
+
             <h1 className="text-white font-black text-4xl md:text-6xl leading-none mb-4"
               style={{ fontFamily: 'Poppins,sans-serif' }}>
               {movie.title}
             </h1>
 
-            {/* Meta */}
             <div className="flex flex-wrap items-center gap-3 mb-5 text-sm">
               <span className="flex items-center gap-1 text-yellow-400 font-bold">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -184,45 +150,15 @@ const MovieDetailPage = () => {
               {movie.description}
             </p>
 
-            {/* Price badge */}
-            {!isDemo && movie.price && !movie.isFree && (
-              <div className="flex items-center gap-3 mb-5">
-                <span className="flex items-center gap-2 bg-[#E50914]/15 border border-[#E50914]/40 text-white px-5 py-2.5 rounded-xl">
-                  <svg className="w-5 h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  <span className="text-white/60 text-sm">Ko'rish narxi:</span>
-                  <span className="text-[#E50914] font-black text-lg">{movie.price?.toLocaleString()} so'm</span>
-                </span>
-              </div>
-            )}
-            {isDemo && (
-              <div className="flex items-center gap-3 mb-5">
-                <span className="flex items-center gap-2 bg-green-500/15 border border-green-500/40 text-white px-5 py-2.5 rounded-xl">
-                  <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span className="text-green-400 font-bold text-sm">Demo rejim — barcha filmlar bepul!</span>
-                </span>
-              </div>
-            )}
-
-            {/* Buttons */}
             <div className="flex flex-wrap gap-3 mb-10">
               <button
-                onClick={() => {
-                  if (isDemo || movie.isFree || isPaid(movie._id)) {
-                    setPlayer(true);
-                  } else {
-                    setShowPayment(true);
-                  }
-                }}
+                onClick={() => setPlayer(true)}
                 className="btn-red flex items-center gap-2.5 px-8 py-3.5 rounded-xl text-base glow-red"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                 </svg>
-                {isDemo ? "Ko'rish (Demo)" : isPaid(movie._id) ? "Ko'rish" : `Ko'rish — ${movie.price?.toLocaleString()} so'm`}
+                Ko'rish
               </button>
 
               <button
@@ -237,7 +173,6 @@ const MovieDetailPage = () => {
               </button>
             </div>
 
-            {/* Cast */}
             {movie.cast.length > 0 && (
               <div>
                 <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest mb-4">Aktyorlar</h3>
@@ -300,25 +235,10 @@ const MovieDetailPage = () => {
         </div>
       </div>
 
-      {/* Similar */}
       {similar.length > 0 && (
         <div className="pb-16">
           <MovieRow title="O'xshash Filmlar" movies={similar} />
         </div>
-      )}
-
-      {/* Payment Modal */}
-      {showPayment && movie.price && !isDemo && (
-        <PaymentModal
-          movieTitle={movie.title}
-          price={movie.price}
-          onSuccess={() => {
-            markAsPaid(movie._id);
-            setShowPayment(false);
-            setPlayer(true);
-          }}
-          onClose={() => setShowPayment(false)}
-        />
       )}
     </div>
   );
