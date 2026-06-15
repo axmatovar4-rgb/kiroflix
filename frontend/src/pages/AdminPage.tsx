@@ -255,16 +255,26 @@ const AdminPage = () => {
         {/* Tabs */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">
           <button onClick={() => setTab('list')}
-            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='list'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
-            🎬 Filmlar
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='list'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4"/>
+            </svg>
+            Filmlar
           </button>
           <button onClick={openAdd}
-            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='add'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
-            + Yangi film
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='add'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+            </svg>
+            Yangi film
           </button>
           <button onClick={() => { setTab('users'); setUsers(loadUsers()); }}
-            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='users'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
-            👥 Foydalanuvchilar <span className="ml-1 opacity-60 text-xs">({users.length})</span>
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${tab==='users'?'bg-[#E50914] text-white':'glass text-white/50 hover:text-white'}`}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            Foydalanuvchilar
+            <span className="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{users.length}</span>
           </button>
           {saved && (
             <span className="text-green-400 text-sm flex items-center gap-1.5 ml-auto">
