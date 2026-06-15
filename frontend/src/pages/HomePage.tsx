@@ -127,7 +127,7 @@ const HomePage = () => {
               <div className="bg-gradient-to-br from-slate-600 to-slate-700 px-6 pt-8 pb-6">
                 <p className="text-white/70 text-sm font-medium mb-2">1 Oylik</p>
                 <div className="flex items-end gap-1">
-                  <span className="text-white font-black text-3xl">29 900</span>
+                  <span className="text-white font-black text-3xl">100 000</span>
                 </div>
                 <p className="text-white/50 text-xs mt-1">so'm/oy</p>
               </div>
@@ -164,7 +164,7 @@ const HomePage = () => {
               <div className="bg-gradient-to-br from-blue-700 to-blue-800 px-6 pt-8 pb-6">
                 <p className="text-white/70 text-sm font-medium mb-2">3 Oylik</p>
                 <div className="flex items-end gap-1">
-                  <span className="text-white font-black text-3xl">69 900</span>
+                  <span className="text-white font-black text-3xl">300 000</span>
                 </div>
                 <p className="text-white/50 text-xs mt-1">so'm/3 oy</p>
               </div>
@@ -204,7 +204,7 @@ const HomePage = () => {
               <div className="bg-gradient-to-br from-purple-700 to-purple-800 px-6 pt-8 pb-6">
                 <p className="text-white/70 text-sm font-medium mb-2">6 Oylik</p>
                 <div className="flex items-end gap-1">
-                  <span className="text-white font-black text-3xl">119 900</span>
+                  <span className="text-white font-black text-3xl">600 000</span>
                 </div>
                 <p className="text-white/50 text-xs mt-1">so'm/6 oy</p>
               </div>
@@ -244,7 +244,7 @@ const HomePage = () => {
               <div className="bg-gradient-to-br from-[#E50914] to-[#b20710] px-6 pt-8 pb-6">
                 <p className="text-white/70 text-sm font-medium mb-2">1 Yillik</p>
                 <div className="flex items-end gap-1">
-                  <span className="text-white font-black text-3xl">199 900</span>
+                  <span className="text-white font-black text-3xl">1 500 000</span>
                 </div>
                 <p className="text-white/50 text-xs mt-1">so'm/yil</p>
               </div>
