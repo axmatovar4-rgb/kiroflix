@@ -10,15 +10,28 @@ const ADMIN_KEY = 'cv_admin_movies';
 
 const DEMO_LIMIT = 10;
 
-const getAllMovies = (isDemo: boolean): Movie[] => {
+// Tarif bo'yicha film limiti
+const getPlanLimit = (): number => {
+  const isDemo    = localStorage.getItem('cv_is_demo') === '1';
+  const planName  = localStorage.getItem('cv_plan_name') || '';
+  if (isDemo) return 10;
+  if (planName.includes('1 Oylik'))  return 10;
+  if (planName.includes('3 Oylik'))  return 50;
+  if (planName.includes('6 Oylik'))  return 100;
+  if (planName.includes('1 Yillik')) return Infinity;
+  return Infinity; // default — cheksiz
+};
+
+const getAllMovies = (): Movie[] => {
   try {
     const saved = localStorage.getItem(ADMIN_KEY);
     const adminMovies: Movie[] = saved ? JSON.parse(saved) : [];
     const adminIds = new Set(adminMovies.map(m => m._id));
     const all = [...adminMovies, ...mockMovies.filter(m => !adminIds.has(m._id))];
-    return isDemo ? all.slice(0, DEMO_LIMIT) : all;
+    const limit = getPlanLimit();
+    return limit === Infinity ? all : all.slice(0, limit);
   } catch {
-    return isDemo ? mockMovies.slice(0, DEMO_LIMIT) : mockMovies;
+    return mockMovies;
   }
 };
 
@@ -37,10 +50,7 @@ const HomePage = () => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    const isDemo = localStorage.getItem('cv_is_demo') === '1';
-    console.log('Demo mode:', isDemo, '| Flag value:', localStorage.getItem('cv_is_demo'));
-    const movies = getAllMovies(isDemo);
-    console.log('Movies loaded:', movies.length);
+    const movies = getAllMovies();
     setAllMovies(movies);
     const t = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(t);
