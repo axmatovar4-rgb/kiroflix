@@ -28,7 +28,7 @@ const LoginPage = () => {
       return;
     }
 
-    // Avval login, xato bo'lsa вЂ” avtomatik ro'yxatdan o'tkaz
+    // Avval login, xato bo'lsa —” avtomatik ro'yxatdan o'tkaz
     try {
       await login(email, pass);
       navigate('/');
@@ -70,7 +70,7 @@ const LoginPage = () => {
         <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-purple-900/15 rounded-full blur-3xl" />
       </div>
 
-      {/* в”Ђв”Ђ LEFT вЂ” Branding в”Ђв”Ђ */}
+      {/* в”Ђв”Ђ LEFT —” Branding в”Ђв”Ђ */}
       <div className="relative z-10 hidden lg:flex lg:w-[55%] flex-col justify-between p-16">
         <div>
           <h1 className="text-[#E50914] font-black text-5xl tracking-widest"
@@ -88,7 +88,7 @@ const LoginPage = () => {
             }}>kirish vaqti</span>
           </h2>
           <p className="text-white/55 text-lg leading-relaxed max-w-md mb-10">
-            Minglab filmlar, seriallar вЂ” barchasi bir joyda.
+            Minglab filmlar, seriallar —” barchasi bir joyda.
             Istalgan vaqt, istalgan qurilmada tomosha qiling.
           </p>
 
@@ -133,7 +133,7 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Robiya Xurshidova вЂ” asoschi */}
+            {/* Robiya Xurshidova —” asoschi */}
             <div className="flex items-center gap-3 glass rounded-xl px-4 py-3">
               <div className="w-9 h-9 bg-purple-500/15 rounded-lg flex items-center justify-center flex-shrink-0 relative">
                 <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,12 +160,12 @@ const LoginPage = () => {
                 <a key={l} href="#" className="text-white/25 hover:text-white/50 text-xs transition-colors">{l}</a>
               ))}
             </div>
-            <p className="text-white/15 text-xs">В© 2026 KIROFLIX вЂў O'zbekiston</p>
+            <p className="text-white/15 text-xs">© 2026 KIROFLIX • O'zbekiston</p>
           </div>
         </div>
       </div>
 
-      {/* в”Ђв”Ђ RIGHT вЂ” Login form в”Ђв”Ђ */}
+      {/* в”Ђв”Ђ RIGHT —” Login form в”Ђв”Ђ */}
       <div className="relative z-10 w-full lg:w-[45%] flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
 
@@ -278,3 +278,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
