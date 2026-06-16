@@ -1,6 +1,7 @@
 ﻿import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import Footer from '../components/Footer';
 
 const ADMIN_USER = 'Robiya';
 const ADMIN_PASS = 'Robiya';
@@ -582,6 +583,9 @@ const LoginPage = () => {
           </div>
         </div>
       )}
+
+      {/* ── FOOTER ── */}
+      <Footer />
     </div>
   );
 };
