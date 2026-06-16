@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
@@ -98,9 +98,20 @@ const PLANS = [
 type PayStep = 'method' | 'card' | 'processing' | 'success';
 
 const LoginPage = () => {
-  const { login, register } = useAuth();
+  const { login, register, user, loading } = useAuth();
   const navigate = useNavigate();
   const tariflarRef = useRef<HTMLElement>(null);
+
+  // Allaqachon kirgan bo'lsa — bosh sahifaga
+  useEffect(() => {
+    if (!loading && user) {
+      const hasPlan = localStorage.getItem('cv_plan_active') === '1';
+      const isDemo  = localStorage.getItem('cv_is_demo') === '1';
+      if (hasPlan || isDemo) {
+        navigate('/');
+      }
+    }
+  }, [user, loading]);
 
   const [email,    setEmail]    = useState('');
   const [pass,     setPass]     = useState('');
